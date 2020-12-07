@@ -79,7 +79,10 @@ public enum TokenType {
 
     //注释
     /** 注释 */
-    COMMENT;
+    COMMENT,
+
+    //文件末尾
+    EOF;
 
     @Override
     public String toString() {
@@ -161,6 +164,8 @@ public enum TokenType {
                 return "SEMICOLON";
             case COMMENT:
                 return "COMMENT";
+            case EOF:
+                return "EOF";
 
             default:
                 return "InvalidToken";
