@@ -24,4 +24,7 @@ public class Instruction {
     public void setParam(Integer param) {
         this.param = param;
     }
+    public Integer getInstruction() {
+        return this.getType().getValue();
+    }
 }

@@ -1286,4 +1286,76 @@ public final class Analyser {
         }
         return false;
     }
+
+    public static Tokenizer getTokenizer() {
+        return tokenizer;
+    }
+
+    public static Token getTokenNow() {
+        return tokenNow;
+    }
+
+    public static List<Instruction> getInstructions() {
+        return instructions;
+    }
+
+    public static List<Var> getVars() {
+        return Vars;
+    }
+
+    public static List<Const> getConsts() {
+        return Consts;
+    }
+
+    public static List<Function> getFunctions() {
+        return Functions;
+    }
+
+    public static List<GlobalVar> getGlobalVars() {
+        return globalVars;
+    }
+
+    public static List<Param> getParams() {
+        return params;
+    }
+
+    public static FunctionWithInstructions getStartFunction() {
+        return startFunction;
+    }
+
+    public static int getLocalVarCount() {
+        return localVarCount;
+    }
+
+    public static int getGlobalVarCount() {
+        return globalVarCount;
+    }
+
+    public static int getFunctionCount() {
+        return functionCount;
+    }
+
+    public static Stack<TokenType> getOperatorStack() {
+        return operatorStack;
+    }
+
+    public static boolean isAssign() {
+        return Assign;
+    }
+
+    public static boolean isHasReturn() {
+        return hasReturn;
+    }
+
+    public static int getAddress() {
+        return address;
+    }
+
+    public static List<FunctionWithInstructions> getFunctionWithInstructionsList() {
+        return FunctionWithInstructionsList;
+    }
+
+    public static int[][] getPriority() {
+        return priority;
+    }
 }

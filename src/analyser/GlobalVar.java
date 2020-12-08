@@ -18,7 +18,7 @@ public class GlobalVar {
     public GlobalVar(boolean isConst) {
         this.is_const = isConst;
     }
-    public boolean isIs_const() {
+    public boolean is_const() {
         return is_const;
     }
 
