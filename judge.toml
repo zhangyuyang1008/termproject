@@ -3,5 +3,5 @@
 image = { source = "dockerfile", path = ".", tag = "pascal-lex-example" }
 
 run = [
-  "java src/test/tokenizerTester $input $asm",
+  "java test/tokenizerTester $input $asm",
 ]

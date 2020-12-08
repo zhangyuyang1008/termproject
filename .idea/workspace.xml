@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="febf8cf2-d54c-43e7-94c2-482bf870458c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/judge.toml" beforeDir="false" afterPath="$PROJECT_DIR$/judge.toml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +76,7 @@
       <workItem from="1607322258095" duration="173000" />
       <workItem from="1607322953410" duration="26631000" />
       <workItem from="1607372719915" duration="5631000" />
-      <workItem from="1607413858281" duration="13364000" />
+      <workItem from="1607413858281" duration="13691000" />
     </task>
     <servers />
   </component>
