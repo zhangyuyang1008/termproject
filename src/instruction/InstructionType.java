@@ -30,7 +30,7 @@ public enum  InstructionType{
 //    itof,
 //    shrl,
     br,
-    brFrue,
+    brTrue,
     brFalse,
     call,
     ret,
@@ -97,7 +97,7 @@ public enum  InstructionType{
                 return 0x41;
             case brFalse:
                 return 0x42;
-            case brFrue:
+            case brTrue:
                 return 0x43;
             default:
                 return 0xfff;
