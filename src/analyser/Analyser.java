@@ -195,8 +195,6 @@ public final class Analyser {
         if (!type.equals("int"))
             throw new AnalyzeError(ErrorCode.noInt,tokenNow.getStartPos());
 
-        //读下一个token，应该是ASSIGN
-        tokenNow = Tokenizer.getToken();
         if (tokenNow.getTokenType() != TokenType.ASSIGN)
             throw new AnalyzeError(ErrorCode.ConstantNeedValue,tokenNow.getStartPos());
 
@@ -261,7 +259,7 @@ public final class Analyser {
             throw new AnalyzeError(ErrorCode.noInt,tokenNow.getStartPos());
 
 
-        if (tokenNow.getTokenType() != TokenType.ASSIGN) {
+        if (tokenNow.getTokenType() == TokenType.ASSIGN) {
             Assign = true;
             Instruction ainstruction;
             //是全局变量
@@ -440,7 +438,8 @@ public final class Analyser {
                 if (isOperator(tokenNow)) {
                     analyseOperatorExpr(level);
                 }
-            }else if (tokenNow.getTokenType() == TokenType.IDENT) {
+            }
+            else if (tokenNow.getTokenType() == TokenType.IDENT) {
                 String name = (String) tokenNow.getValue();
                 tokenNow=Tokenizer.getToken();
                 if (tokenNow.getTokenType() == TokenType.L_PAREN) {
@@ -870,7 +869,7 @@ public final class Analyser {
         if (tokenNow.getTokenType() != TokenType.R_PAREN)
             paracount = analyseCallParamList(level);
 
-        if (checkParamNum(name, paracount))
+        if (!checkParamNum(name, paracount))
             throw new AnalyzeError(ErrorCode.invalidParam,tokenNow.getStartPos());
 
         if (tokenNow.getTokenType() != TokenType.R_PAREN)

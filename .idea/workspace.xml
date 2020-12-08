@@ -3,8 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="febf8cf2-d54c-43e7-94c2-482bf870458c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/judge.toml" beforeDir="false" afterPath="$PROJECT_DIR$/judge.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/analyser/Analyser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/analyser/Analyser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/tokenizerTester.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/tokenizerTester.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tokenizer/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tokenizer/Token.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +77,7 @@
       <workItem from="1607322258095" duration="173000" />
       <workItem from="1607322953410" duration="26631000" />
       <workItem from="1607372719915" duration="5631000" />
-      <workItem from="1607413858281" duration="13691000" />
+      <workItem from="1607413858281" duration="17946000" />
     </task>
     <servers />
   </component>
@@ -104,38 +105,38 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="933" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1607322323859" />
-    <state width="1493" height="456" key="GridCell.Tab.0.bottom" timestamp="1607372709997">
+    <state width="723" height="180" key="GridCell.Tab.0.bottom" timestamp="1607448550584">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="456" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1607372709997" />
-    <state width="1493" height="456" key="GridCell.Tab.0.center" timestamp="1607372709997">
+    <state width="723" height="180" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1607448550584" />
+    <state width="723" height="180" key="GridCell.Tab.0.center" timestamp="1607448550584">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="456" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1607372709997" />
-    <state width="1493" height="456" key="GridCell.Tab.0.left" timestamp="1607372709997">
+    <state width="723" height="180" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1607448550584" />
+    <state width="723" height="180" key="GridCell.Tab.0.left" timestamp="1607448550584">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="456" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1607372709997" />
-    <state width="1493" height="456" key="GridCell.Tab.0.right" timestamp="1607372709997">
+    <state width="723" height="180" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1607448550584" />
+    <state width="723" height="180" key="GridCell.Tab.0.right" timestamp="1607448550584">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="456" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1607372709997" />
-    <state width="1493" height="252" key="GridCell.Tab.1.bottom" timestamp="1607372709994">
+    <state width="723" height="180" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1607448550584" />
+    <state width="723" height="180" key="GridCell.Tab.1.bottom" timestamp="1607448550584">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="252" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1607372709994" />
-    <state width="1493" height="252" key="GridCell.Tab.1.center" timestamp="1607372709994">
+    <state width="723" height="180" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1607448550584" />
+    <state width="723" height="180" key="GridCell.Tab.1.center" timestamp="1607448550584">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="252" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1607372709994" />
-    <state width="1493" height="252" key="GridCell.Tab.1.left" timestamp="1607372709994">
+    <state width="723" height="180" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1607448550584" />
+    <state width="723" height="180" key="GridCell.Tab.1.left" timestamp="1607448550584">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="252" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1607372709994" />
-    <state width="1493" height="252" key="GridCell.Tab.1.right" timestamp="1607372709994">
+    <state width="723" height="180" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1607448550584" />
+    <state width="723" height="180" key="GridCell.Tab.1.right" timestamp="1607448550584">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="252" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1607372709994" />
+    <state width="723" height="180" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1607448550584" />
     <state x="833" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1607322954663">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -157,14 +158,6 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/tokenizer/Tokenizer.java</url>
-          <line>114</line>
-          <properties class="tokenizer.Tokenizer" method="IdentOrKeyword">
-            <option name="EMULATED" value="true" />
-          </properties>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/analyser/Analyser.java</url>
           <line>150</line>
           <properties class="analyser.Analyser" method="analyseConstDeclStmt">
@@ -182,12 +175,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/analyser/Analyser.java</url>
-          <line>414</line>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/analyser/Analyser.java</url>
-          <line>1148</line>
+          <line>1147</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -195,7 +183,22 @@
           <line>87</line>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/tokenizerTester.java</url>
+          <line>20</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/analyser/Analyser.java</url>
+          <line>872</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="tokenNow" language="JAVA" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>
