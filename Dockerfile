@@ -1,4 +1,4 @@
 FROM java:8
 WORKDIR /tokenizerTester/
 COPY ./* ./
-RUN javac tokenizerTester.java
+RUN javac src/test/tokenizerTester.java
