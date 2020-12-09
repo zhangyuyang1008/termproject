@@ -73,7 +73,7 @@ public class Tokenizer {
         else if (peek=='"') {
             return Str();
         }
-        //都不是则调用分析运算符或字符串token的喊数
+        //都不是则调用分析运算符token的喊数
         else {
             return Operator();
         }

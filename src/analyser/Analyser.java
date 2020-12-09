@@ -47,7 +47,7 @@ public final class Analyser {
     //是否有返回值
     private static boolean hasReturn;
     //起始地址
-    private static int address;
+    private static int address = 0;
     //带指令函数列表
     private static List<FunctionWithInstructions> FunctionWithInstructionsList = new ArrayList<>();
     //算符优先矩阵

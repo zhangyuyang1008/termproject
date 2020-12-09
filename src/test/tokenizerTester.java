@@ -6,15 +6,26 @@ import analyser.FunctionWithInstructions;
 import analyser.GlobalVar;
 import tokenizer.Tokenizer;
 
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.util.List;
 import java.util.Scanner;
 
 public class tokenizerTester {
     public static void main(String[] args) throws Exception {
+        File ctoFile = new File(args[0]);
+
+        InputStreamReader rdCto = new InputStreamReader(new FileInputStream(ctoFile));
+
+        BufferedReader bfReader = new BufferedReader(rdCto);
+
+        String txtline = null;
+
+        while ((txtline = bfReader.readLine()) != null) {
+
+            System.out.println(txtline);
+
+        }
+        bfReader.close();
         try{
             File file = new File(args[0]);
             Scanner input = new Scanner(file);
