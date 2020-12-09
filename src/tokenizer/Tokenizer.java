@@ -253,7 +253,7 @@ public class Tokenizer {
 
             case '*':
                 try{
-                    return new Token(TokenType.MINUS, '*', it.previousPos(), it.currentPos());
+                    return new Token(TokenType.MUL, '*', it.previousPos(), it.currentPos());
                 }catch (Exception e){
                     throw new TokenizeError(ErrorCode.ExpectedToken,it.previousPos());
                 }
