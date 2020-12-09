@@ -28,7 +28,7 @@ public class tokenizerTester {
         bfReader.close();
 //        "src/test/test.txt"
         try{
-            File file = new File(args[0]);
+            File file = new File( args[0]);
             Scanner input = new Scanner(file);
             Tokenizer.runTokenizer(input);
             System.out.println("\n------------------Analyser Start");

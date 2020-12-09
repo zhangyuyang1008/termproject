@@ -38,7 +38,7 @@ public class Tokenizer {
         Tokenizer tokenizer = new Tokenizer(new StringIter(s));
         Token tokenNow = tokenizer.nextToken();
         while (!tokenNow.getTokenType().toString().equals("EOF")) {
-            tokenList.add(tokenNow);
+            if (tokenNow.getTokenType()!=TokenType.COMMENT) tokenList.add(tokenNow);
             System.out.print(tokenNow.toString() + "\n");
             tokenNow = tokenizer.nextToken();
         }
@@ -73,6 +73,17 @@ public class Tokenizer {
         }
         else if (peek=='"') {
             return Str();
+        }
+        else if (peek =='\\'){
+            //指向\
+            it.nextChar();
+            peek = it.peekChar();
+            if(peek =='\\'){
+                while (it.peekChar()!='\n'){
+                    it.nextChar();
+                }
+            }
+            return new Token(TokenType.COMMENT, "", it.currentPos(), it.currentPos());
         }
         //都不是则调用分析运算符token的喊数
         else {

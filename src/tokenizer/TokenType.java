@@ -84,6 +84,7 @@ public enum TokenType {
     //文件末尾
     EOF;
 
+
     @Override
     public String toString() {
         switch (this) {

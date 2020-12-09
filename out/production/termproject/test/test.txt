@@ -1,2 +1,5 @@
 fn main() -> void {
-    putstr("zyy
+    needle = getint();
+    \\ssssss
+    putstr("zyy");
+}
