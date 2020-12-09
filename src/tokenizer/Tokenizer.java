@@ -1,5 +1,6 @@
 package tokenizer;
 
+import error.AnalyzeError;
 import error.ErrorCode;
 import error.TokenizeError;
 import util.Pos;
@@ -368,11 +369,12 @@ public class Tokenizer {
     }
 
     //获取token
-    public static Token getToken() {
+    public static Token getToken() throws Exception{
         if (tokenIterator.hasNext()) {
             Token token = tokenIterator.next();
             return token;
         }
-        return null;
+        ArrayIndexOutOfBoundsException  exception = new ArrayIndexOutOfBoundsException();
+        throw exception;
     }
 }
