@@ -221,6 +221,9 @@ public class Tokenizer {
                 it.nextChar();
                 break;
             }
+            else if(peek == '\r'||peek == '\n'||peek == '\t'){
+                throw new TokenizeError(ErrorCode.InvalidInput,it.ptr);
+            }
             else charNow = peek;
             token += charNow;
             it.nextChar();
@@ -369,12 +372,11 @@ public class Tokenizer {
     }
 
     //获取token
-    public static Token getToken() throws Exception{
+    public static Token getToken(){
         if (tokenIterator.hasNext()) {
             Token token = tokenIterator.next();
             return token;
         }
-        ArrayIndexOutOfBoundsException  exception = new ArrayIndexOutOfBoundsException();
-        throw exception;
+        return null;
     }
 }
