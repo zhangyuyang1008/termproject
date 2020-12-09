@@ -39,4 +39,15 @@ public class FunctionWithInstructions {
     public List<Instruction> getBody() {
         return body;
     }
+
+    @Override
+    public String toString() {
+        return "FunctionDef{\n" +
+                "   id=" + id +
+                ",\n    returnSlots=" + returnCount +
+                ",\n    paramSlots=" + paramCount +
+                ",\n    localSlots=" + localCount +
+                ",\n    body=" + body +'\n'+
+                '}';
+    }
 }

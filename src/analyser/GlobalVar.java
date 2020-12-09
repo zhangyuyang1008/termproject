@@ -29,4 +29,12 @@ public class GlobalVar {
     public String getValueItems() {
         return valueItems;
     }
+    @Override
+    public String toString() {
+        return "Global{" +
+                "isConst=" + is_const +
+                ", valueCount=" + valueCount +
+                ", valueItems=" + valueItems +
+                '}';
+    }
 }

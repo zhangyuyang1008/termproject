@@ -27,4 +27,12 @@ public class Instruction {
     public Integer getInstruction() {
         return this.getType().getValue();
     }
+
+    @Override
+    public String toString() {
+        return "\n      Instructions{\n" +
+                "           instruction=" + this.getType() +
+                ",\n        paramIds=" + param + '\n'+
+                '}';
+    }
 }

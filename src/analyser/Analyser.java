@@ -39,7 +39,7 @@ public final class Analyser {
     //全局变量个数
     private static int globalVarCount = 0;
     //函数个数
-    private static int functionCount = 0;
+    private static int functionCount = 1;
     //操作符栈
     private static Stack<TokenType> operatorStack = new Stack<>();
     //是否在赋值
@@ -118,12 +118,14 @@ public final class Analyser {
             //add call main
             ainstruction.setParam(1);
             //main函数最后声明
+            System.out.println("functionCount"+functionCount);
             ainstruction = new Instruction(InstructionType.call, functionCount-1);
             programInitInstruction.add(ainstruction);
             ainstruction = new Instruction(InstructionType.popn, 1);
             programInitInstruction.add(ainstruction);
         }else {
             //add call main
+            System.out.println("functionCount"+functionCount);
             ainstruction = new Instruction(InstructionType.call, functionCount-1);
             programInitInstruction.add(ainstruction);
         }
@@ -511,13 +513,13 @@ public final class Analyser {
                     }
                     //是参数
                     else if (isParam(name)) {
-                        int id = getParamId(name);
+                        Integer id = getParamId(name);
                         //取出值
                         Instruction ainstruction = new Instruction(InstructionType.arga, address + id);
                         instructions.add(ainstruction);
                     }
                     else {
-                        int id = getId(name, level);
+                        Integer id = getId(name, level);
                         Instruction ainstruction = new Instruction(InstructionType.globa, id);
                         instructions.add(ainstruction);
                     }
@@ -534,7 +536,7 @@ public final class Analyser {
             else if (tokenNow.getTokenType() == TokenType.L_PAREN) {
                 operatorStack.push(TokenType.L_PAREN);
                 if (!isNewFunction(name)) {
-                    int id;
+                    Integer id;
                     Instruction ainstruction;
                     // 是库函数
                     if (isStaticFunction(name)) {
