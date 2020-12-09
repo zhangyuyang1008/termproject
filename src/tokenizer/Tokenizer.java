@@ -277,6 +277,8 @@ public class Tokenizer {
                 }
             case '!':
                 try{
+                    //向前移动到第二个等号
+                    it.nextChar();
                     return new Token(TokenType.NEQ, "!=", it.previousPos(), it.currentPos());
                 }catch (Exception e){
                     throw new TokenizeError(ErrorCode.ExpectedToken,it.previousPos());

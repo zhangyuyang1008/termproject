@@ -1,32 +1,20 @@
-fn is_odd(x: int) -> int {
-    return (x / 2 * 2) - x;
-}
-
-fn fastpow(base: int, exp: int) -> int {
-    let res: int = 1;
-    if exp < 0 {
-        return 0;
-    }
-    while exp > 0 {
-        if is_odd(exp) {
-            res = res * base;
-        }
-        base = base * base;
-        exp = exp / 2;
-    }
-    return res;
-}
-
 fn main() -> void {
-    let base: int;
-    let exp: int;
-    let count: int;
-    count = getint();
-    while count > 0 {
-        base = getint();
-        exp = getint();
-        putint(fastpow(base,exp));
+    let needle: int;
+    let low: int = 0;
+    let high: int = 1024;
+    let mid: int;
+    needle = getint();
+    while low != high {
+        mid = (low + high + 1) / 2;
+        putint(mid);
         putln();
-        count = count - 1;
+        if mid > needle {
+            high = mid;
+        } else if mid == needle {
+            low = mid;
+            high = mid;
+        } else {
+            low = mid;
+        }
     }
 }
