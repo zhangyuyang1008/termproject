@@ -74,17 +74,6 @@ public class Tokenizer {
         else if (peek=='"') {
             return Str();
         }
-        else if (peek =='\\'){
-            //指向\
-            it.nextChar();
-            peek = it.peekChar();
-            if(peek =='\\'){
-                while (it.peekChar()!='\n'){
-                    it.nextChar();
-                }
-            }
-            return new Token(TokenType.COMMENT, "", it.currentPos(), it.currentPos());
-        }
         //都不是则调用分析运算符token的喊数
         else {
             return Operator();
@@ -275,7 +264,16 @@ public class Tokenizer {
 
             case '/':
                 try{
-                    return new Token(TokenType.DIV, '/', it.previousPos(), it.currentPos());
+                    if(it.peekChar()=='/'){
+                        //指向第二个/
+                        it.nextChar();
+                        while (it.peekChar()!='\n'){
+                            it.nextChar();
+                        }
+                        return new Token(TokenType.COMMENT, "", it.currentPos(), it.currentPos());
+                    }
+                    else
+                        return new Token(TokenType.DIV, '/', it.previousPos(), it.currentPos());
                 }catch (Exception e){
                     throw new TokenizeError(ErrorCode.ExpectedToken,it.previousPos());
                 }
