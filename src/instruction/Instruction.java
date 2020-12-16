@@ -28,11 +28,15 @@ public class Instruction {
         return this.getType().getValue();
     }
 
+//    @Override
+//    public String toString() {
+//        return "\n      Instructions{\n" +
+//                "           instruction=" + this.getType() +
+//                ",\n        paramIds=" + param + '\n'+
+//                '}';
+//    }
     @Override
     public String toString() {
-        return "\n      Instructions{\n" +
-                "           instruction=" + this.getType() +
-                ",\n        paramIds=" + param + '\n'+
-                '}';
+        return this.getType() +", " + param + '\n';
     }
 }

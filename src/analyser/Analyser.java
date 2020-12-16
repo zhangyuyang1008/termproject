@@ -628,7 +628,7 @@ public final class Analyser {
         if (tokenNow.getTokenType() == TokenType.CONST_KW || tokenNow.getTokenType() == TokenType.LET_KW)
             analyseDeclStmt(level);
         else if (tokenNow.getTokenType() == TokenType.IF_KW)
-            analyseIfStmt(type, level);
+            analyseIfStmt(type, level,whileStart,toWhileEnd);
         else if (tokenNow.getTokenType() == TokenType.WHILE_KW)
             analyseWhileStmt(type, level);
         else if (tokenNow.getTokenType() == TokenType.RETURN_KW)
@@ -646,7 +646,7 @@ public final class Analyser {
     }
 
     //if_stmt -> 'if' expr block_stmt ('else' (block_stmt | if_stmt))?
-    public static void analyseIfStmt(String type, Integer level) throws Exception {
+    public static void analyseIfStmt(String type, Integer level,Integer whileStart,Integer toWhileEnd) throws Exception {
         if (tokenNow.getTokenType() != TokenType.IF_KW)
             throw new AnalyzeError(ErrorCode.noIf,tokenNow.getStartPos());
 
@@ -668,7 +668,7 @@ public final class Analyser {
         instructions.add(ifInstruction);
         int index = instructions.size();
 
-        analyseBlockStmt(type, level + 1,0,0);
+        analyseBlockStmt(type, level + 1, whileStart, toWhileEnd);
 
 
         int size = instructions.size();
@@ -682,9 +682,9 @@ public final class Analyser {
                 //读下一个token，应该去分析有没有if
                 tokenNow = Tokenizer.getToken();
                 if (tokenNow.getTokenType() == TokenType.IF_KW)
-                    analyseIfStmt(type, level);
+                    analyseIfStmt(type, level,whileStart,toWhileEnd);
                 else {
-                    analyseBlockStmt(type, level + 1,0,0);
+                    analyseBlockStmt(type, level + 1, whileStart, toWhileEnd);
 //                    size = instructions.size();
                     ainstruction = new Instruction(InstructionType.br, 0);
                     instructions.add(ainstruction);
@@ -703,9 +703,9 @@ public final class Analyser {
                 //读下一个token，应该去分析有没有if
                 tokenNow = Tokenizer.getToken();
                 if (tokenNow.getTokenType() == TokenType.IF_KW)
-                    analyseIfStmt(type, level);
+                    analyseIfStmt(type, level, whileStart, toWhileEnd);
                 else {
-                    analyseBlockStmt(type, level + 1,0,0);
+                    analyseBlockStmt(type, level + 1, whileStart, toWhileEnd);
                     ainstruction = new Instruction(InstructionType.br, 0);
                     instructions.add(ainstruction);
                 }
@@ -837,7 +837,7 @@ public final class Analyser {
         Instruction ainstruction = new Instruction(InstructionType.br, 0);
         instructions.add(ainstruction);
 
-        Integer dis = toWhileEnd-instructions.size();
+        Integer dis = toWhileEnd-instructions.size()+1;
         ainstruction.setParam(dis);
 
         tokenNow=Tokenizer.getToken();
