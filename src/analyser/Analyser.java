@@ -818,7 +818,7 @@ public final class Analyser {
         Instruction ainstruction = new Instruction(InstructionType.br, 0);
         instructions.add(ainstruction);
 
-        Integer dis = whileStart-instructions.size();
+        Integer dis = whileStart-instructions.size()+1;
         ainstruction.setParam(dis);
 
         tokenNow=Tokenizer.getToken();
