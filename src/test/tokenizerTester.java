@@ -28,7 +28,7 @@ public class tokenizerTester {
 //        bfReader.close();
 //        "src/test/test.txt"
         try{
-            File file = new File("src/test/test.txt");
+            File file = new File(args[0]);
             Scanner input = new Scanner(file);
             Tokenizer.runTokenizer(input);
             System.out.println("\n------------------Analyser Start");
@@ -45,7 +45,7 @@ public class tokenizerTester {
             System.out.println("\n----------------------------生成二进制");
             Out binary = new Out(Analyser.getGlobalVars(), Analyser.getStartFunction(), Analyser.getFunctionWithInstructionsList());
 
-            DataOutputStream out = new DataOutputStream(new FileOutputStream(new File("out.txt")));
+            DataOutputStream out = new DataOutputStream(new FileOutputStream(new File(args[1])));
             List<Byte> bytes = binary.generate();
             byte[] resultBytes = new byte[bytes.size()];
             for (int i = 0; i < bytes.size(); ++i) {
