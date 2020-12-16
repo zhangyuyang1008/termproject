@@ -878,7 +878,7 @@ public final class Analyser {
         }
         else if(tokenNow.getTokenType()==TokenType.CHAR_LITERAL){
             //加载字符
-            Instruction ainstruction = new Instruction(InstructionType.push, (Integer) tokenNow.getValue());
+            Instruction ainstruction = new Instruction(InstructionType.push, (Integer)tokenNow.getValue());
             instructions.add(ainstruction);
 
         }

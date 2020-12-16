@@ -429,8 +429,9 @@ public class Tokenizer {
         else {
             it.nextChar();
         }
+        int a = Integer.valueOf(charNow);
         //已经移动到右边的'\''上
-        return new Token(TokenType.CHAR_LITERAL, charNow, p, it.ptr);
+        return new Token(TokenType.CHAR_LITERAL, a, p, it.ptr);
 
 
     }
