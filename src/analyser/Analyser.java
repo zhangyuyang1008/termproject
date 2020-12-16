@@ -193,7 +193,7 @@ public final class Analyser {
         tokenNow = Tokenizer.getToken();
         String type = analyseTy();
         //此处不是函数返回值，只能是int
-        if (!type.equals("int"))
+        if (!(type.equals("int")||type.equals("char")))
             throw new AnalyzeError(ErrorCode.noInt,tokenNow.getStartPos());
 
         if (tokenNow.getTokenType() != TokenType.ASSIGN)
@@ -256,7 +256,7 @@ public final class Analyser {
         //读下一个token，应该为'ty'
         tokenNow = Tokenizer.getToken();
         String type = analyseTy();
-        if (!type.equals("int"))
+        if (!(type.equals("int")||type.equals("char")))
             throw new AnalyzeError(ErrorCode.noInt,tokenNow.getStartPos());
 
 
@@ -326,7 +326,7 @@ public final class Analyser {
         tokenNow = Tokenizer.getToken();
         String type = analyseTy();
         int returnCount;
-        if (type.equals("int")) {
+        if (type.equals("int")||type.equals("char")) {
             returnCount = 1;
             address = 1;
         }
@@ -408,7 +408,7 @@ public final class Analyser {
         String type = (String) tokenNow.getValue();
 
         //基础c0是int或void(另外再提醒一下，返回值类型 return_type 即使为 void 也不能省略)
-        if (!(type.equals("int") || type.equals("void")))
+        if (!(type.equals("int") || type.equals("void")||type.equals("char")))
             throw new AnalyzeError(ErrorCode.InvalidIdentifier,tokenNow.getStartPos());
 
         tokenNow = Tokenizer.getToken();
@@ -609,11 +609,6 @@ public final class Analyser {
         tokenNow = Tokenizer.getToken();
         while (tokenNow.getTokenType() != TokenType.R_BRACE) {
             //分析语句：Stmt
-            if(tokenNow.getTokenType() == TokenType.CONTINUE_KW||
-                    tokenNow.getTokenType() == TokenType.BREAK_KW){
-                analyseStmt(type, level, whileStart, toWhileEnd);
-                break;
-            }
             analyseStmt(type, level, whileStart, toWhileEnd);
         }
         //读下一个token
@@ -775,7 +770,7 @@ public final class Analyser {
 
         tokenNow=Tokenizer.getToken();
         if (tokenNow.getTokenType()!= TokenType.SEMICOLON) {
-            if (type.equals("int")) {
+            if (type.equals("int")||type.equals("char")) {
                 //取返回地址
                 Instruction ainstruction = new Instruction(InstructionType.arga, 0);
                 instructions.add(ainstruction);
@@ -1002,7 +997,7 @@ public final class Analyser {
     public static void analyseAsExpr() throws Exception {
         tokenNow=Tokenizer.getToken();
         String type = analyseTy();
-        if (!type.equals("int"))
+        if (!(type.equals("int")||type.equals("char")))
             throw new AnalyzeError(ErrorCode.invalidType,tokenNow.getStartPos());
     }
 
@@ -1301,7 +1296,7 @@ public final class Analyser {
         }
         for (Function function : Functions) {
             if (function.getFunction_name().equals(name)) {
-                if (function.getReturn_type().equals("int")) return true;
+                if (function.getReturn_type().equals("int")||function.getReturn_type().equals("char")) return true;
             }
         }
         return false;
@@ -1335,7 +1330,7 @@ public final class Analyser {
     public static boolean mainHasReturn() {
         for (Function function : Functions) {
             if (function.getFunction_name().equals("main")) {
-                if (function.getReturn_type().equals("int")) return true;
+                if (function.getReturn_type().equals("int")||function.getReturn_type().equals("char")) return true;
                 break;
             }
         }
