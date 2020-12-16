@@ -12,20 +12,20 @@ import java.util.Scanner;
 
 public class tokenizerTester {
     public static void main(String[] args) throws Exception {
-//        File ctoFile = new File(args[0]);
-//
-//        InputStreamReader rdCto = new InputStreamReader(new FileInputStream(ctoFile));
-//
-//        BufferedReader bfReader = new BufferedReader(rdCto);
-//
-//        String txtline = null;
-//
-//        while ((txtline = bfReader.readLine()) != null) {
-//
-//            System.out.println(txtline);
-//
-//        }
-//        bfReader.close();
+        File ctoFile = new File(args[0]);
+
+        InputStreamReader rdCto = new InputStreamReader(new FileInputStream(ctoFile));
+
+        BufferedReader bfReader = new BufferedReader(rdCto);
+
+        String txtline = null;
+
+        while ((txtline = bfReader.readLine()) != null) {
+
+            System.out.println(txtline);
+
+        }
+        bfReader.close();
 //        "src/test/test.txt"
         try{
             File file = new File(args[0]);

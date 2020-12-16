@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="febf8cf2-d54c-43e7-94c2-482bf870458c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/tokenizer/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tokenizer/Token.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/tokenizerTester.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/tokenizerTester.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +82,7 @@
       <workItem from="1607531975711" duration="4230000" />
       <workItem from="1608042307579" duration="5797000" />
       <workItem from="1608052986874" duration="4372000" />
-      <workItem from="1608114679818" duration="15000" />
+      <workItem from="1608114679818" duration="1164000" />
     </task>
     <servers />
   </component>
