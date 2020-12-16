@@ -1,12 +1,20 @@
-fn main()         // Hi!
-          -> void // comment here
-// do you miss me?
-{
-    // let i: int = 65535;
-    let i: int = 0;
-    let j: int = 1;
-    putint(i+j); // this prints out i + j
-    // return 0;
-    // we should not return here
-// } this is a fake end!
-} // this is real
+fn main() -> void {
+    let counter: int = 10;
+    while counter > 0 {
+        counter = counter - 1;
+        if counter == 8 {
+            counter = 4;
+            continue;
+        }
+        if counter == 0 {
+            break;
+        }
+        while 1 {
+            if counter > 0 {
+                putint(counter);
+                putln();
+                break;
+            }
+        }
+    }
+}

@@ -12,23 +12,23 @@ import java.util.Scanner;
 
 public class tokenizerTester {
     public static void main(String[] args) throws Exception {
-        File ctoFile = new File(args[0]);
-
-        InputStreamReader rdCto = new InputStreamReader(new FileInputStream(ctoFile));
-
-        BufferedReader bfReader = new BufferedReader(rdCto);
-
-        String txtline = null;
-
-        while ((txtline = bfReader.readLine()) != null) {
-
-            System.out.println(txtline);
-
-        }
-        bfReader.close();
+//        File ctoFile = new File(args[0]);
+//
+//        InputStreamReader rdCto = new InputStreamReader(new FileInputStream(ctoFile));
+//
+//        BufferedReader bfReader = new BufferedReader(rdCto);
+//
+//        String txtline = null;
+//
+//        while ((txtline = bfReader.readLine()) != null) {
+//
+//            System.out.println(txtline);
+//
+//        }
+//        bfReader.close();
 //        "src/test/test.txt"
         try{
-            File file = new File(args[0]);
+            File file = new File("src/test/test.txt");
             Scanner input = new Scanner(file);
             Tokenizer.runTokenizer(input);
             System.out.println("\n------------------Analyser Start");
@@ -45,7 +45,7 @@ public class tokenizerTester {
             System.out.println("\n----------------------------生成二进制");
             Out binary = new Out(Analyser.getGlobalVars(), Analyser.getStartFunction(), Analyser.getFunctionWithInstructionsList());
 
-            DataOutputStream out = new DataOutputStream(new FileOutputStream(new File(args[1])));
+            DataOutputStream out = new DataOutputStream(new FileOutputStream(new File("out.txt")));
             List<Byte> bytes = binary.generate();
             byte[] resultBytes = new byte[bytes.size()];
             for (int i = 0; i < bytes.size(); ++i) {
