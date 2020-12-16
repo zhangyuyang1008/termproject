@@ -82,7 +82,7 @@
       <workItem from="1607531975711" duration="4230000" />
       <workItem from="1608042307579" duration="5797000" />
       <workItem from="1608052986874" duration="4372000" />
-      <workItem from="1608114679818" duration="10275000" />
+      <workItem from="1608114679818" duration="12698000" />
     </task>
     <servers />
   </component>
@@ -199,7 +199,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/analyser/Analyser.java</url>
-          <line>874</line>
+          <line>879</line>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
       </breakpoints>

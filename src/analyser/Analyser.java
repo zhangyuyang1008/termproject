@@ -609,6 +609,11 @@ public final class Analyser {
         tokenNow = Tokenizer.getToken();
         while (tokenNow.getTokenType() != TokenType.R_BRACE) {
             //分析语句：Stmt
+            if(tokenNow.getTokenType() == TokenType.CONTINUE_KW||
+                    tokenNow.getTokenType() == TokenType.BREAK_KW){
+                analyseStmt(type, level, whileStart, toWhileEnd);
+                break;
+            }
             analyseStmt(type, level, whileStart, toWhileEnd);
         }
         //读下一个token
