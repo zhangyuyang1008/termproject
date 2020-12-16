@@ -7,11 +7,8 @@ import instruction.InstructionType;
 import tokenizer.Token;
 import tokenizer.TokenType;
 import tokenizer.Tokenizer;
-import util.Pos;
 
-import java.text.Format;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
@@ -44,6 +41,8 @@ public final class Analyser {
     private static Stack<TokenType> operatorStack = new Stack<>();
     //是否在赋值
     private static boolean Assign;
+    //是否在循环
+    private static boolean Circle;
     //是否有返回值
     private static boolean hasReturn;
     //起始地址
@@ -343,7 +342,7 @@ public final class Analyser {
 
 
         //分析代码块
-        analyseBlockStmt(type, 2);
+        analyseBlockStmt(type, 2,0,0);
 
         //若没有返回
         if (!hasReturn)
@@ -587,7 +586,7 @@ public final class Analyser {
                 analyseIdentExpr(name, level);
             }
         }
-        else if (tokenNow.getTokenType() == TokenType.UINT_LITERAL || tokenNow.getTokenType() == TokenType.STRING_LITERAL) {
+        else if (tokenNow.getTokenType() == TokenType.UINT_LITERAL || tokenNow.getTokenType() == TokenType.STRING_LITERAL||tokenNow.getTokenType()==TokenType.CHAR_LITERAL) {
             analyseLiteralExpr();
             if (isOperator(tokenNow)) analyseOperatorExpr(level);
         }
@@ -602,7 +601,7 @@ public final class Analyser {
     }
 
     //block_stmt -> '{' stmt* '}'
-    public static void analyseBlockStmt(String type, Integer level) throws Exception {
+    public static void analyseBlockStmt(String type, Integer level, Integer whileStart, Integer toWhileEnd) throws Exception {
         if (tokenNow.getTokenType() != TokenType.L_BRACE)
             throw new AnalyzeError(ErrorCode.noLB,tokenNow.getStartPos());
 
@@ -610,7 +609,7 @@ public final class Analyser {
         tokenNow = Tokenizer.getToken();
         while (tokenNow.getTokenType() != TokenType.R_BRACE) {
             //分析语句：Stmt
-            analyseStmt(type, level);
+            analyseStmt(type, level, whileStart, toWhileEnd);
         }
         //读下一个token
         tokenNow = Tokenizer.getToken();
@@ -625,7 +624,7 @@ public final class Analyser {
     //    | return_stmt
     //    | block_stmt
     //    | empty_stmt
-    public static void analyseStmt(String type, Integer level) throws Exception {
+    public static void analyseStmt(String type, Integer level,Integer whileStart,Integer toWhileEnd) throws Exception {
         if (tokenNow.getTokenType() == TokenType.CONST_KW || tokenNow.getTokenType() == TokenType.LET_KW)
             analyseDeclStmt(level);
         else if (tokenNow.getTokenType() == TokenType.IF_KW)
@@ -637,7 +636,11 @@ public final class Analyser {
         else if (tokenNow.getTokenType() == TokenType.SEMICOLON)
             analyseEmptyStmt();
         else if (tokenNow.getTokenType() == TokenType.L_BRACE)
-            analyseBlockStmt(type, level + 1);
+            analyseBlockStmt(type, level + 1,whileStart,toWhileEnd);
+        else if (tokenNow.getTokenType() == TokenType.CONTINUE_KW)
+            analyseContinueStmt(whileStart);
+        else if (tokenNow.getTokenType() == TokenType.BREAK_KW)
+            analyseBreakStmt(toWhileEnd);
         else
             analyseExprStmt(level);
     }
@@ -665,7 +668,7 @@ public final class Analyser {
         instructions.add(ifInstruction);
         int index = instructions.size();
 
-        analyseBlockStmt(type, level + 1);
+        analyseBlockStmt(type, level + 1,0,0);
 
 
         int size = instructions.size();
@@ -681,7 +684,7 @@ public final class Analyser {
                 if (tokenNow.getTokenType() == TokenType.IF_KW)
                     analyseIfStmt(type, level);
                 else {
-                    analyseBlockStmt(type, level + 1);
+                    analyseBlockStmt(type, level + 1,0,0);
 //                    size = instructions.size();
                     ainstruction = new Instruction(InstructionType.br, 0);
                     instructions.add(ainstruction);
@@ -702,7 +705,7 @@ public final class Analyser {
                 if (tokenNow.getTokenType() == TokenType.IF_KW)
                     analyseIfStmt(type, level);
                 else {
-                    analyseBlockStmt(type, level + 1);
+                    analyseBlockStmt(type, level + 1,0,0);
                     ainstruction = new Instruction(InstructionType.br, 0);
                     instructions.add(ainstruction);
                 }
@@ -721,6 +724,8 @@ public final class Analyser {
         instructions.add(ainstruction);
 
         int whileStart = instructions.size();
+
+
         tokenNow=Tokenizer.getToken();
         analyseExpr(level);
         //弹栈
@@ -736,8 +741,13 @@ public final class Analyser {
         Instruction jumpInstruction = new Instruction(InstructionType.br, 0);
         instructions.add(jumpInstruction);
         int index = instructions.size();
+        int toWhileEnd = index-1;
 
-        analyseBlockStmt(type, level + 1);
+
+        //记录循环状态
+        Circle = true;
+        analyseBlockStmt(type, level + 1,whileStart,toWhileEnd);
+        Circle = false;
 
 
         //跳至while 判断语句
@@ -797,6 +807,44 @@ public final class Analyser {
         tokenNow=Tokenizer.getToken();
     }
 
+    //continue_stmt -> 'continue' ';'
+    public static void analyseContinueStmt(Integer whileStart) throws Exception{
+        //不在循环中出现
+        if(!Circle)
+            throw new AnalyzeError(ErrorCode.noInCircle,tokenNow.getStartPos());
+        if(tokenNow.getTokenType() != TokenType.CONTINUE_KW)
+            throw new AnalyzeError(ErrorCode.noContinue,tokenNow.getStartPos());
+        //跳转语句
+        Instruction ainstruction = new Instruction(InstructionType.br, 0);
+        instructions.add(ainstruction);
+
+        Integer dis = whileStart-instructions.size();
+        ainstruction.setParam(dis);
+
+        tokenNow=Tokenizer.getToken();
+        if (tokenNow.getTokenType() != TokenType.SEMICOLON)
+            throw new AnalyzeError(ErrorCode.NoSemicolon,tokenNow.getStartPos());
+    }
+
+    //break_stmt -> 'break' ';'
+    public static void analyseBreakStmt(Integer toWhileEnd) throws Exception{
+        //不在循环中出现
+        if(!Circle)
+            throw new AnalyzeError(ErrorCode.noInCircle,tokenNow.getStartPos());
+        if(tokenNow.getTokenType() != TokenType.BREAK_KW)
+            throw new AnalyzeError(ErrorCode.noBreak,tokenNow.getStartPos());
+        //跳转语句
+        Instruction ainstruction = new Instruction(InstructionType.br, 0);
+        instructions.add(ainstruction);
+
+        Integer dis = instructions.size()-toWhileEnd;
+        ainstruction.setParam(dis);
+
+        tokenNow=Tokenizer.getToken();
+        if (tokenNow.getTokenType() != TokenType.SEMICOLON)
+            throw new AnalyzeError(ErrorCode.NoSemicolon,tokenNow.getStartPos());
+    }
+
     //expr_stmt -> expr ';'
     public static void analyseExprStmt(Integer level) throws Exception {
         analyseExpr(level);
@@ -811,7 +859,7 @@ public final class Analyser {
         tokenNow=Tokenizer.getToken();
     }
 
-    //literal_expr -> UINT_LITERAL | DOUBLE_LITERAL | STRING_LITERAL
+    //literal_expr -> UINT_LITERAL | DOUBLE_LITERAL | STRING_LITERAL | CHAR_LITERAL
     public static void analyseLiteralExpr() throws Exception {
         if (tokenNow.getTokenType() == TokenType.UINT_LITERAL) {
             //加载常数
@@ -826,6 +874,12 @@ public final class Analyser {
             Instruction ainstruction = new Instruction(InstructionType.push, globalVarCount);
             instructions.add(ainstruction);
             globalVarCount++;
+
+        }
+        else if(tokenNow.getTokenType()==TokenType.CHAR_LITERAL){
+            //加载字符
+            Instruction ainstruction = new Instruction(InstructionType.push, (Integer) tokenNow.getValue());
+            instructions.add(ainstruction);
 
         }
         else
@@ -1147,11 +1201,6 @@ public final class Analyser {
     public static void functionIntoGlobals(String name) {
         char[] arr = name.toCharArray();
         int len = arr.length;
-//        String items = "";
-//        for (int i = 0; i < len; i++) {
-//            int asc = (int) arr[i];
-//            items = items + String.format("%2X", asc);
-//        }
         GlobalVar global = new GlobalVar(true,len, name);
         globalVars.add(global);
     }

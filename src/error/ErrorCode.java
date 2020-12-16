@@ -6,6 +6,6 @@ public enum ErrorCode {
     NoBegin, NoEnd, NeedIdentifier, ConstantNeedValue, NoSemicolon, InvalidVariableDeclaration, IncompleteExpression,
     NotDeclared, AssignToConstant, DuplicateDeclaration, NotInitialized, InvalidAssignment, InvalidPrint, ExpectedToken,
     noConstant,noColon,noInt,noLet,noLP,noRP,noArrow,noReturn,noLB,noRB,noIf,noWhile,inValidFunction,invalidParam,
-    invalidType,noMain
+    invalidType,noMain,noInCircle,noContinue,noBreak
 
 }

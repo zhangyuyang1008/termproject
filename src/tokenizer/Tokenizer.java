@@ -74,7 +74,10 @@ public class Tokenizer {
         else if (peek=='"') {
             return Str();
         }
-        //都不是则调用分析运算符token的喊数
+        else if(peek=='\''){
+            return Char_literal();
+        }
+        //都不是则调用分析运算符或字符token的喊数
         else {
             return Operator();
         }
@@ -110,7 +113,6 @@ public class Tokenizer {
         //
         // Token 的 Value 应填写数字的值
     }
-
 
     //分析标识符或关键字
     private Token IdentOrKeyword() throws TokenizeError {
@@ -164,6 +166,12 @@ public class Tokenizer {
             }
             else if (token.toLowerCase().equals("return")){
                 return new Token(TokenType.RETURN_KW, "return", p, it.ptr);
+            }
+            else if (token.toLowerCase().equals("continue")){
+                return new Token(TokenType.CONTINUE_KW, "continue", p, it.ptr);
+            }
+            else if (token.toLowerCase().equals("break")){
+                return new Token(TokenType.BREAK_KW, "break", p, it.ptr);
             }
             else {
                 return new Token(TokenType.IDENT, token, p, it.ptr);
@@ -264,6 +272,7 @@ public class Tokenizer {
 
             case '/':
                 try{
+                    //分析注释
                     if(it.peekChar()=='/'){
                         //指向第二个/
                         it.nextChar();
@@ -365,6 +374,65 @@ public class Tokenizer {
                 // 不认识这个输入，摸了
                 throw new TokenizeError(ErrorCode.InvalidInput, it.previousPos());
         }
+    }
+
+    //分析字符
+    private Token Char_literal() throws TokenizeError{
+        //记录初始位置
+        Pos p=it.ptr;
+        //移动到'\''上
+        it.nextChar();
+        //移动到该字符上
+        char charNow = it.nextChar();
+        if(charNow == '\r'||charNow == '\n'||charNow == '\t'||charNow=='\''){
+            throw new TokenizeError(ErrorCode.InvalidInput,it.ptr);
+        }
+        //当是反斜线，有可能为反斜线或者转义序列
+        //查看反斜线后面的字符
+        char peek=it.peekChar();
+        if(charNow=='\\'){
+            switch (peek) {
+                case '\'':
+                    charNow =  '\'';
+                    it.nextChar();
+                    it.nextChar();
+                    break;
+                case '\"':
+                    charNow = '\"';
+                    it.nextChar();
+                    it.nextChar();
+                    break;
+                case '\\':
+                    charNow = '\\';
+                    it.nextChar();
+                    it.nextChar();
+                    break;
+                case 'n':
+                    charNow = '\n';
+                    it.nextChar();
+                    it.nextChar();
+                    break;
+                case 'r':
+                    charNow = '\r';
+                    it.nextChar();
+                    it.nextChar();
+                    break;
+                case 't':
+                    charNow = '\t';
+                    it.nextChar();
+                    it.nextChar();
+                    break;
+                default:
+                    throw new TokenizeError(ErrorCode.InvalidInput,it.ptr);
+            }
+        }
+        else {
+            it.nextChar();
+        }
+        //已经移动到右边的'\''上
+        return new Token(TokenType.CHAR_LITERAL, charNow, p, it.ptr);
+
+
     }
 
     //跳过开头空白符
