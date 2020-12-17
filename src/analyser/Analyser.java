@@ -27,6 +27,10 @@ public final class Analyser {
     private static List<Function> Functions = new ArrayList<>();
     //全局变量表
     private static List<GlobalVar> globalVars = new ArrayList<>();
+    //break表
+    private static List<Break> breakList = new ArrayList<>();
+    //Continue表
+    private static List<Continue> continueList = new ArrayList<>();
     //函数参数列表
     private static List<Param> params;
     //start函数
@@ -43,6 +47,8 @@ public final class Analyser {
     private static boolean Assign;
     //是否在循环
     private static boolean Circle;
+    //循环层数
+    private static int whileLevel=0;
     //是否有返回值
     private static boolean hasReturn;
     //起始地址
@@ -342,7 +348,7 @@ public final class Analyser {
 
 
         //分析代码块
-        analyseBlockStmt(type, 2,0,0);
+        analyseBlockStmt(type, 2);
 
         //若没有返回
         if (!hasReturn)
@@ -601,7 +607,7 @@ public final class Analyser {
     }
 
     //block_stmt -> '{' stmt* '}'
-    public static void analyseBlockStmt(String type, Integer level, Integer whileStart, Integer toWhileEnd) throws Exception {
+    public static void analyseBlockStmt(String type, Integer level) throws Exception {
         if (tokenNow.getTokenType() != TokenType.L_BRACE)
             throw new AnalyzeError(ErrorCode.noLB,tokenNow.getStartPos());
 
@@ -609,7 +615,7 @@ public final class Analyser {
         tokenNow = Tokenizer.getToken();
         while (tokenNow.getTokenType() != TokenType.R_BRACE) {
             //分析语句：Stmt
-            analyseStmt(type, level, whileStart, toWhileEnd);
+            analyseStmt(type, level);
         }
         //读下一个token
         tokenNow = Tokenizer.getToken();
@@ -624,11 +630,11 @@ public final class Analyser {
     //    | return_stmt
     //    | block_stmt
     //    | empty_stmt
-    public static void analyseStmt(String type, Integer level,Integer whileStart,Integer toWhileEnd) throws Exception {
+    public static void analyseStmt(String type, Integer level) throws Exception {
         if (tokenNow.getTokenType() == TokenType.CONST_KW || tokenNow.getTokenType() == TokenType.LET_KW)
             analyseDeclStmt(level);
         else if (tokenNow.getTokenType() == TokenType.IF_KW)
-            analyseIfStmt(type, level,whileStart,toWhileEnd);
+            analyseIfStmt(type, level);
         else if (tokenNow.getTokenType() == TokenType.WHILE_KW)
             analyseWhileStmt(type, level);
         else if (tokenNow.getTokenType() == TokenType.RETURN_KW)
@@ -636,17 +642,17 @@ public final class Analyser {
         else if (tokenNow.getTokenType() == TokenType.SEMICOLON)
             analyseEmptyStmt();
         else if (tokenNow.getTokenType() == TokenType.L_BRACE)
-            analyseBlockStmt(type, level + 1,whileStart,toWhileEnd);
+            analyseBlockStmt(type, level + 1);
         else if (tokenNow.getTokenType() == TokenType.CONTINUE_KW)
-            analyseContinueStmt(whileStart);
+            analyseContinueStmt();
         else if (tokenNow.getTokenType() == TokenType.BREAK_KW)
-            analyseBreakStmt(toWhileEnd);
+            analyseBreakStmt();
         else
             analyseExprStmt(level);
     }
 
     //if_stmt -> 'if' expr block_stmt ('else' (block_stmt | if_stmt))?
-    public static void analyseIfStmt(String type, Integer level,Integer whileStart,Integer toWhileEnd) throws Exception {
+    public static void analyseIfStmt(String type, Integer level) throws Exception {
         if (tokenNow.getTokenType() != TokenType.IF_KW)
             throw new AnalyzeError(ErrorCode.noIf,tokenNow.getStartPos());
 
@@ -668,7 +674,7 @@ public final class Analyser {
         instructions.add(ifInstruction);
         int index = instructions.size();
 
-        analyseBlockStmt(type, level + 1, whileStart, toWhileEnd);
+        analyseBlockStmt(type, level + 1);
 
 
         int size = instructions.size();
@@ -682,10 +688,9 @@ public final class Analyser {
                 //读下一个token，应该去分析有没有if
                 tokenNow = Tokenizer.getToken();
                 if (tokenNow.getTokenType() == TokenType.IF_KW)
-                    analyseIfStmt(type, level,whileStart,toWhileEnd);
+                    analyseIfStmt(type, level);
                 else {
-                    analyseBlockStmt(type, level + 1, whileStart, toWhileEnd);
-//                    size = instructions.size();
+                    analyseBlockStmt(type, level + 1);
                     ainstruction = new Instruction(InstructionType.br, 0);
                     instructions.add(ainstruction);
                 }
@@ -703,9 +708,9 @@ public final class Analyser {
                 //读下一个token，应该去分析有没有if
                 tokenNow = Tokenizer.getToken();
                 if (tokenNow.getTokenType() == TokenType.IF_KW)
-                    analyseIfStmt(type, level, whileStart, toWhileEnd);
+                    analyseIfStmt(type, level);
                 else {
-                    analyseBlockStmt(type, level + 1, whileStart, toWhileEnd);
+                    analyseBlockStmt(type, level + 1);
                     ainstruction = new Instruction(InstructionType.br, 0);
                     instructions.add(ainstruction);
                 }
@@ -741,13 +746,12 @@ public final class Analyser {
         Instruction jumpInstruction = new Instruction(InstructionType.br, 0);
         instructions.add(jumpInstruction);
         int index = instructions.size();
-        int toWhileEnd = index-1;
 
 
         //记录循环状态
-        Circle = true;
-        analyseBlockStmt(type, level + 1,whileStart,toWhileEnd);
-        Circle = false;
+        whileLevel++;
+        analyseBlockStmt(type, level + 1);
+        whileLevel--;
 
 
         //跳至while 判断语句
@@ -760,6 +764,25 @@ public final class Analyser {
 
         dis = instructions.size() - index;
         jumpInstruction.setParam(dis);
+
+        //设置跳转off
+        for(Break b:breakList){
+            int off=whileEnd-b.getPos();
+            //跳到while后第一条语句
+            if(b.getWhileLevel() == whileLevel+1)
+                b.getAinstruction().setParam(off);
+        }
+        for(Continue c:continueList){
+            int off=whileEnd-c.getPos();
+            //跳到while的最后一条语句，即跳回while
+            if(c.getWhileLevel() == whileLevel+1)
+                c.getAinstruction().setParam(off-1);
+        }
+        //清空break和continue表
+        if(whileLevel==0){
+            breakList.clear();
+            continueList.clear();
+        }
 
     }
 
@@ -808,18 +831,17 @@ public final class Analyser {
     }
 
     //continue_stmt -> 'continue' ';'
-    public static void analyseContinueStmt(Integer whileStart) throws Exception{
+    public static void analyseContinueStmt() throws Exception{
         //不在循环中出现
-        if(!Circle)
+        if(whileLevel==0)
             throw new AnalyzeError(ErrorCode.noInCircle,tokenNow.getStartPos());
         if(tokenNow.getTokenType() != TokenType.CONTINUE_KW)
             throw new AnalyzeError(ErrorCode.noContinue,tokenNow.getStartPos());
         //跳转语句
         Instruction ainstruction = new Instruction(InstructionType.br, 0);
         instructions.add(ainstruction);
-
-        Integer dis = whileStart-instructions.size();
-        ainstruction.setParam(dis);
+        //加入continue表
+        continueList.add(new Continue(ainstruction,instructions.size(),whileLevel));
 
         tokenNow=Tokenizer.getToken();
         if (tokenNow.getTokenType() != TokenType.SEMICOLON)
@@ -827,19 +849,17 @@ public final class Analyser {
     }
 
     //break_stmt -> 'break' ';'
-    public static void analyseBreakStmt(Integer toWhileEnd) throws Exception{
+    public static void analyseBreakStmt() throws Exception{
         //不在循环中出现
-        if(!Circle)
+        if(whileLevel==0)
             throw new AnalyzeError(ErrorCode.noInCircle,tokenNow.getStartPos());
         if(tokenNow.getTokenType() != TokenType.BREAK_KW)
             throw new AnalyzeError(ErrorCode.noBreak,tokenNow.getStartPos());
         //跳转语句
         Instruction ainstruction = new Instruction(InstructionType.br, 0);
         instructions.add(ainstruction);
-
-        Integer dis = toWhileEnd-instructions.size()+1;
-        ainstruction.setParam(dis);
-
+        //加入break表
+        breakList.add(new Break(ainstruction,instructions.size(),whileLevel));
         tokenNow=Tokenizer.getToken();
         if (tokenNow.getTokenType() != TokenType.SEMICOLON)
             throw new AnalyzeError(ErrorCode.NoSemicolon,tokenNow.getStartPos());
