@@ -456,13 +456,6 @@ public final class Analyser {
                         Instruction ainstruction;
                         // 是库函数
                         if (isStaticFunction(name)) {
-//                            LibraryFunction function = new LibraryFunction(name, globalCount);
-//                            libraryFunctions.add(function);
-//                            id = globalCount;
-//                            globalCount++;
-//
-//                            GlobalVar global = Format.functionNameToGlobalInformation(name);
-//                            globals.add(global);
                             functionIntoGlobals(name);
                             ainstruction = new Instruction(InstructionType.callname, globalVarCount);
                             globalVarCount++;
@@ -545,14 +538,6 @@ public final class Analyser {
                     Instruction ainstruction;
                     // 是库函数
                     if (isStaticFunction(name)) {
-//                        LibraryFunction function = new LibraryFunction(name, globalCount);
-//                        libraryFunctions.add(function);
-//                        id = globalCount;
-//                        globalCount++;
-
-//                        Global global = Format.functionNameToGlobalInformation(name);
-//                        globals.add(global);
-//                        instruction = new Instructions(Instruction.callname, id);
                         functionIntoGlobals(name);
                         ainstruction = new Instruction(InstructionType.callname, globalVarCount);
                         globalVarCount++;
